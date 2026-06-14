@@ -558,6 +558,13 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
+console.log("PORT =", process.env.PORT);
+console.log("SESSION_SECRET =", !!process.env.SESSION_SECRET);
+console.log("MP_ACCESS_TOKEN =", !!process.env.MP_ACCESS_TOKEN);
+console.log("EMAIL_USER =", !!process.env.EMAIL_USER);
+console.log("EMAIL_PASS =", !!process.env.EMAIL_PASS);
+console.log("ADMIN_EMAIL =", !!process.env.ADMIN_EMAIL);
+
 server.listen(PORT, () => {
   console.log(`\n🚀 Tienda + Chat corriendo en http://localhost:${PORT}\n`);
 });
