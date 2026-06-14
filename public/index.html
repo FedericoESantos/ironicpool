@@ -78,7 +78,7 @@
 
   <!-- ── PRESENTACION BIENVENIDA ── -->
 
-  <div class="intro">
+  <div class="intro" id="home-intro">
     <h1>🚀 Bienvenidos al Cuartel General</h1>
     <h2>Este rincón artístico donde entrenamos nuestra capacidad para asombrarte.</h2>
     <br>
@@ -533,8 +533,7 @@
     }
 
     function renderProducts(list) {
-      console.log("PRIMER PRODUCTO:", list[0]);
-      console.log("IMAGE:", list[0].image);
+
       list.forEach(p => {
         console.log(
           "ID:", p.id,
@@ -1130,6 +1129,13 @@
 
     // ── Override showPage to handle chat logic ─────────────────────────────────────
     function showPage(name) {
+      const intro = document.getElementById('home-intro');
+
+      if (name === 'products') {
+        intro.style.display = 'block';
+      } else {
+        intro.style.display = 'none';
+      }
       chatOpen = (name === 'chat');
 
       if (chatOpen) {
