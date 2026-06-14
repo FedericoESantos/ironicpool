@@ -31,7 +31,7 @@ const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true, sameSite:'none', maxAge: 24 * 60 * 60 * 1000 }
+  cookie: { secure: true, sameSite: 'none', maxAge: 24 * 60 * 60 * 1000 }
 });
 app.use(sessionMiddleware);
 
@@ -61,19 +61,24 @@ function saveDB(data) {
 const PRODUCTS_PATH = path.join(__dirname, '..', 'data', 'products', 'products.json');
 
 function loadProducts() {
-  fs.mkdirSync(
-    path.join(__dirname, '..', 'data', 'products'),
-    { recursive: true }
-  );
+  try {
+    if (!fs.existsSync(PRODUCTS_PATH)) {
+      fs.writeFileSync(PRODUCTS_PATH, '[]');
+      return [];
+    }
 
-  if (!fs.existsSync(PRODUCTS_PATH)) {
-    fs.writeFileSync(PRODUCTS_PATH, JSON.stringify([], null, 2));
+    const data = fs.readFileSync(PRODUCTS_PATH, 'utf8');
+
+    if (!data.trim()) {
+      return [];
+    }
+
+    return JSON.parse(data);
+  } catch (err) {
+    console.error('ERROR products.json:', err);
     return [];
   }
-
-  return JSON.parse(fs.readFileSync(PRODUCTS_PATH, 'utf8'));
 }
-
 function saveProducts(products) {
   fs.writeFileSync(PRODUCTS_PATH, JSON.stringify(products, null, 2));
 }
@@ -314,7 +319,7 @@ app.post('/api/create-payment', requireAuth, async (req, res) => {
       auto_return: 'approved',
 
       // 🔥 CLAVE QUE TE FALTA
-      notification_url: 'ironicpool-production.up.railway.app/api/webhook'
+      notification_url: 'https://ironicpool-production.up.railway.app/api/webhook'
     };
 
     const response = await preferenceClient.create({
