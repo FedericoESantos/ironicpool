@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechStore — Tu tienda de tecnología</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+
+</head>
+
+<body>
+
+  <!-- ── P A G I N A S ────────────────────────────────────────────────────────────────────── -->
+
+  <!-- ── NAV ── -->
+  <nav>
+    <!-- Logo siempre visible -->
+    <div class="nav-logo" onclick="showPage('products')">
+      <img src="./images/LOGO.png" alt="logo" class="logo">
+    </div>
+
+    <!-- Links desktop: se ocultan en mobile con CSS -->
+    <div class="nav-links">
+      <button class="nav-btn active" onclick="showPage('products')" id="nav-products">Productos</button>
+      <button class="nav-btn" onclick="showPage('cart')" id="nav-cart">Carrito</button>
+      <button class="nav-btn" onclick="showPage('chat')" id="nav-chat">💬 Chat</button>
+      <button class="nav-btn" onclick="showPage('auth')" id="nav-auth">Mi cuenta</button>
+    </div>
+
+    <!-- Derecha desktop: usuario. Se oculta en mobile -->
+    <div id="user-info">
+      Hola, <span id="user-name"></span>
+      <button class="btn btn-outline btn-sm" onclick="logout()">Salir</button>
+    </div>
+
+    <!-- Carrito: siempre visible. margin-left:auto lo empuja a la derecha cuando nav-links se oculta -->
+    <div id="cart-icon" onclick="showPage('cart')">
+      🛒 <span id="cart-count"></span>
+    </div>
+
+    <!-- Hamburger: solo visible en mobile via CSS -->
+    <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ── MOBILE DRAWER ── -->
+  <div class="mobile-drawer" id="mobile-drawer">
+    <button class="drawer-link" id="dl-products" onclick="showPage('products');closeDrawer()">
+      <span class="icon">🛍️</span> Productos
+    </button>
+    <button class="drawer-link" id="dl-cart" onclick="showPage('cart');closeDrawer()">
+      <span class="icon">🛒</span> Carrito
+    </button>
+    <button class="drawer-link" id="dl-chat" onclick="showPage('chat');closeDrawer()">
+      <span class="icon">💬</span> Chat <span id="drawer-chat-badge"
+        style="display:none;background:var(--accent);color:white;font-size:0.65rem;padding:1px 7px;border-radius:99px;margin-left:4px"></span>
+    </button>
+    <button class="drawer-link" id="dl-auth" onclick="showPage('auth');closeDrawer()">
+      <span class="icon">👤</span> Mi cuenta
+    </button>
+
+    <div class="drawer-divider"></div>
+
+    <div class="drawer-user" id="drawer-user-block" style="display:none">
+      <div class="drawer-user-text">
+        <strong id="drawer-user-name"></strong>
+        Sesión activa
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="logout();closeDrawer()">Cerrar sesión</button>
+    </div>
+  </div>
+
+  <!-- ── PRESENTACION BIENVENIDA ── -->
+
+  <div class="intro">
+    <h1>🚀 Bienvenidos al Cuartel General</h1>
+    <h2>Este rincón artístico donde entrenamos nuestra capacidad para asombrarte.</h2>
+    <br>
+    <p>
+      Ademas de los productos que tenemos en venta tambien ofrecemos otro tipo de trabajos ...
+    </p>
+
+    <p>
+      • Soportes para celulares y Joystick | • Cortador de Galletas | • Accesorios para Cosplayers
+      | • Porta Auriculares | • Bustos Personalizados (Consultar) | • Cestos de Basura | • Portavelas
+      y Portasahumerios | • Decorativos del hogar | • Juegos de Mesa | • Alcancías | • Bandejas
+      Desayunadoras | • Paleta para temperas | • Posa Vasos | • Repisas | • Cajas | • Vinchas
+      <br><br>
+      y muchas cosas más!!!
+    </p>
+
+    <p>
+      Consulte por mail por trabajos personalizados
+    </p>
+
+    <div class="intro-buttons">
+      <button class="btn btn-primary" onclick="showPage('help')">
+        Contactanos
+      </button>
+    </div>
+  </div>
+
+  <!-- ── PAGE: PRODUCTOS ── -->
+  <div class="page active" id="page-products">
+    <div class="page-header">
+      <h1>Nuestros Productos</h1>
+      <p>Si lo podes Imaginar, lo podemos crear!!!</p>
+      <p>Los mejores productos hechos en impresión 3D</p>
+    </div>
+    <div class="filters">
+      <input class="search-box" type="search" autocomplete="new-password" spellcheck="false"
+        placeholder="🔍 Buscar productos..." id="search-input" oninput="filterProducts()">
+      <div class="filter-chips" id="filter-chips">
+        <button class="chip active" onclick="setCategory(null, this)">Todos</button>
+      </div>
+    </div>
+    <div class="products-grid" id="products-grid"></div>
+  </div>
+
+  <!-- ── PAGE: CARRITO ── -->
+  <div class="page" id="page-cart">
+    <div class="cart-container">
+      <div class="page-header" style="text-align:left; padding-left:0; padding-right:0">
+        <h1>🛒 Tu Carrito</h1>
+      </div>
+      <div id="cart-empty" class="cart-empty" style="display:none">
+        <div class="empty-icon">🛒</div>
+        <h3>Tu carrito está vacío</h3>
+        <p style="margin:.5rem 0 1.5rem">Agrega productos para comenzar</p>
+        <button class="btn btn-primary" onclick="showPage('products')">Ver productos</button>
+      </div>
+      <div class="cart-layout" id="cart-content" style="display:none">
+        <div id="cart-items"></div>
+        <div class="cart-summary">
+          <h3>Resumen del pedido</h3>
+          <div class="form-group">
+            <label>Zona de envío</label>
+            <select id="shipping-zone" onchange="calculateShipping()">
+              <option value="Florida">Florida</option>
+              <option value="Montevideo">Montevideo</option>
+              <option value="Canelones">Canelones</option>
+              <option value="Maldonado">Maldonado</option>
+              <option value="Interior del País">Interior del País</option>
+            </select>
+          </div>
+          <div class="summary-row"><span>Subtotal</span><span id="sum-sub">$0.00</span></div>
+          <div class="summary-row">
+            <span>Envío</span>
+            <span id="shipping-total">$0</span>
+          </div>
+          <div class="summary-row total"><span>Total</span><span id="sum-total">$0.00</span></div>
+          <button class="btn btn-primary" style="width:100%;margin-top:1.1rem" onclick="checkout()">Finalizar compra
+            →</button>
+          <button class="btn btn-outline btn-sm" style="width:100%;margin-top:0.6rem" onclick="clearCart()">Vaciar
+            carrito</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PAGE: AUTH ── -->
+  <div class="page" id="page-auth">
+    <div class="auth-container">
+      <div class="page-header" style="text-align:left; padding-left:0; padding-right:0">
+        <h1>Mi Cuenta</h1>
+      </div>
+      <div id="logged-in-view" style="display:none">
+        <div class="auth-card" style="text-align:center">
+          <div style="font-size:3rem;margin-bottom:1rem">👤</div>
+          <h2 id="logged-user-name" style="margin-bottom:.4rem"></h2>
+          <p style="color:var(--muted);margin-bottom:2rem;font-size:.88rem">Sesión activa</p>
+          <button class="btn btn-danger" style="width:100%" onclick="logout()">Cerrar sesión</button>
+        </div>
+      </div>
+      <div id="logged-out-view">
+        <div class="auth-card">
+          <div class="auth-tabs">
+            <button class="auth-tab active" onclick="switchTab('login')" id="tab-login">Iniciar sesión</button>
+            <button class="auth-tab" onclick="switchTab('register')" id="tab-register">Registrarse</button>
+          </div>
+          <div id="auth-msg" class="msg"></div>
+          <div id="form-login">
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="login-email" placeholder="tu@email.com">
+            </div>
+            <div class="form-group">
+              <label>Contraseña</label>
+              <input type="password" id="login-password" placeholder="••••••••">
+            </div>
+            <button class="btn btn-primary" style="width:100%" onclick="login()" id="btn-login">Iniciar sesión</button>
+          </div>
+          <div id="form-register" style="display:none">
+            <div class="form-group">
+              <label>Nombre completo</label>
+              <input type="text" id="reg-name" placeholder="Juan García">
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="reg-email" placeholder="tu@email.com">
+            </div>
+            <div class="form-group">
+              <label>Contraseña</label>
+              <input type="password" id="reg-password" placeholder="Mínimo 6 caracteres">
+            </div>
+            <button class="btn btn-primary" style="width:100%" onclick="register()" id="btn-reg">Crear cuenta</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PAGE: CHAT ── -->
+  <div class="page" id="page-chat">
+    <div class="chat-wrapper">
+      <div class="chat-header-row">
+        <h1>💬 Sala de Chat</h1>
+        <div class="chat-online-pill">
+          <span class="online-dot"></span>
+          <span id="online-count">0</span> en línea
+        </div>
+      </div>
+
+      <!-- Bloqueado si no está logueado -->
+      <div class="chat-locked" id="chat-locked">
+        <div class="lock-icon">🔒</div>
+        <h3>Sala privada</h3>
+        <p>Iniciá sesión para chatear con otros usuarios</p>
+        <button class="btn btn-primary" onclick="showPage('auth')">Iniciar sesión</button>
+      </div>
+
+      <!-- Chat activo si está logueado -->
+      <div class="chat-body" id="chat-active" style="display:none">
+        <div class="chat-messages" id="chat-messages"></div>
+        <div class="chat-sidebar" id="chat-sidebar">
+          <h4>En línea</h4>
+          <div id="online-list"></div>
+        </div>
+      </div>
+
+      <div class="chat-input-row" id="chat-input-row" style="display:none">
+        <input type="text" id="chat-input" placeholder="Escribí un mensaje..." maxlength="500" autocomplete="off">
+        <button class="btn btn-primary" onclick="sendMessage()" id="chat-send-btn">Enviar</button>
+      </div>
+    </div>
+  </div>
+
+  <!--Contacto -->
+
+  <!-- ── PAGE: HELP ── -->
+  <div class="page" id="page-help">
+
+    <div class="page-header">
+      <h1>Centro de Ayuda</h1>
+      <p>¿Tenés alguna consulta? Escribinos.</p>
+    </div>
+
+    <div class="auth-card" style="max-width:700px;margin:auto">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" id="contact-name">
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="contact-email">
+      </div>
+
+      <div class="form-group">
+        <label>Asunto</label>
+        <input type="text" id="contact-subject">
+      </div>
+
+      <div class="form-group">
+        <label>Mensaje</label>
+        <textarea id="contact-message" rows="6" style="width:100%"></textarea>
+      </div>
+
+      <button class="btn btn-primary" onclick="sendContactForm()">
+        Enviar consulta
+      </button>
+    </div>
+
+    <br>
+    <hr><br>
+
+    <div id="envios-section">
+      <div class="container-cp">
+        <h3>Calcular envío según departamento</h3>
+        <br>
+        <p>Si la compra se realiza fuera de Florida se agregará costo de envío.</p>
+
+        <br>
+
+        <select id="shipping-zone-help" onchange="calculateShipping()">
+          <option>Montevideo</option>
+          <option>Canelones</option>
+          <option>Maldonado</option>
+          <option>Interior del País</option>
+        </select>
+
+        <br>
+        <p id="shipping-result"></p>
+      </div>
+    </div>
+
+    <br>
+    <hr><br>
+
+    <div class="container-garantia" id="garantia">
+      <h3>GARANTÍA</h3>
+      <p>Todos nuestros productos tienen garantía por 30 días.</p>
+    </div>
+
+  </div>
+  <br>
+
+  </div>
+
+  <!-- ── PAGE: SORTEOS ── -->
+  <div class="page" id="page-sorteos">
+    <div id="sorteos">
+
+      <p>🎉 Sorteos IronicPool
+
+        En esta sección publicaremos periódicamente sorteos exclusivos con increíbles premios para nuestra comunidad.
+
+        Te recomendamos visitarla con frecuencia para no perderte ninguna oportunidad. Aquí encontrarás toda la
+        información de cada sorteo, incluyendo fechas de participación, condiciones y fecha del sorteo.
+
+        Una vez realizado el sorteo, también publicaremos el nombre o la fotografía del ganador para brindar total
+        transparencia a nuestros participantes.
+
+        ¡Mucha suerte y gracias por formar parte de IronicPool!</p>
+
+      <!-- con ctrol + k + c -> comentamos y desactivamos -->
+      <!-- con shift + alt + a -> activamos el texto -->
+
+      <!-- CUANDO NO HAY UN SORTEO -->
+      <div class="page-header">
+        <h1>Sorteos</h1>
+        <p>Participá en nuestros sorteos activos.</p>
+        <p>Hermosos productos en 3D,</p>
+      </div>
+
+      <div class="auth-card" style="max-width:700px;margin:auto;text-align:center">
+
+        <h2>🎁 Próximamente</h2>
+
+        <p>
+          Actualmente no hay sorteos activos.
+        </p>
+
+        <p>
+          Estamos preparando nuevos premios para nuestra comunidad.
+          Volvé a visitarnos pronto para participar.
+        </p>
+
+        <div style="font-size:4rem;margin-top:20px">
+          🎉
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- CUANDO HAY UN SORTEO -->
+    <!-- <div class="auth-card" style="max-width:700px;margin:auto">
+
+      <h2>🎉 Sorteo activo</h2>
+      <p>Ganá productos exclusivos de IronicPool</p>
+
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" id="raffle-name">
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="raffle-email">
+      </div>
+
+      <button class="btn btn-primary" onclick="enterRaffle()">
+        Participar
+      </button>
+      
+      <p id="raffle-result"></p> -->
+
+  </div>
+
+  </div>
+
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="nav-logo">
+          <img src="./images/LOGO.png" alt="logo" class="logo">
+        </div>
+
+        <p>Tu tienda digital de productos en 3D. Los mejores Precios. El mejor Resultado. Hacemos trabajos
+          personalizados.</p>
+        <div class="socials">
+          <a class="social-btn" href="#" title="TickTock">🎵</a>
+          <a class="social-btn" href="#" title="Instagram">📸</a>
+          <a class="social-btn" href="#" title="Facebook">f</a>
+          <a class="social-btn" href="#" title="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Tienda</h4>
+        <a href="#" onclick="showAllProducts()">Todos los productos</a>
+        <a href="#" onclick="showOffers()">Ofertas</a>
+        <a href="#" onclick="showNews()">Novedades</a>
+        <a href="#" onclick="showSell()">Más Vendidos</a>
+        <a href="#" onclick="showPage('sorteos')">Sorteos</a>
+      </div>
+      <div class="footer-col">
+        <h4>Ayuda</h4>
+        <a href="#" onclick="showHelpPage('help')">
+          Centro de ayuda
+        </a>
+
+        <a href="#" onclick="irAEnvios(); return false;">
+          Envíos y devoluciones
+        </a>
+
+        <a href="#" onclick="irAGarantia(); return false;">
+          Garantía
+        </a>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <div class="footer-contact-item"><span>📧</span><a
+            href="mailto:soytudadypool@gmail.com">soytudadypool@gmail.com</a>
+        </div>
+        <div class="footer-contact-item"><span>📞</span><a href="tel:+59898000000">+598 93 938 018</a></div>
+        <div class="footer-contact-item"><span>📍</span><a href="#">Florida, Uruguay</a></div>
+        <div class="footer-contact-item"><span>⏰</span><a href="#">Lun–Vie 9:00–18:00</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 IronicPool. Todos los derechos reservados. Hecho con ❤️ en Uruguay.</div>
+  </footer>
+
+  <div id="toast"></div>
+
+  <div class="modal-overlay" id="order-modal">
+    <div class="modal" style="text-align:center">
+      <div style="font-size:3rem;margin-bottom:1rem">🎉</div>
+      <h2 style="margin-bottom:.5rem">¡Compra realizada!</h2>
+      <p style="color:var(--muted);margin-bottom:.5rem">Tu pedido fue confirmado exitosamente.</p>
+      <p style="color:var(--accent2);font-family:'Space Mono',monospace;font-size:.85rem;margin-bottom:1.75rem"
+        id="order-id-text"></p>
+      <button class="btn btn-primary" onclick="closeModal()">Seguir comprando</button>
+    </div>
+  </div>
+
+  <!-- ── FIN DE LAS PAGINAS ────────────────────────────────────────────────────────────────────── -->
+
+  <script>
+    // ── STATE ──────────────────────────────────────────────────────────────────────
+    let currentUser = null;
+    let cart = [];
+    let products = [];
+    let activeCategory = null;
+
+    // ── INIT ──────────────────────────────────────────────────────────────────────
+    async function init() {
+      await checkAuth();
+      await loadProducts();
+      await loadCart();
+
+      document.getElementById('search-input').value = '';
+
+      const cartSelect = document.getElementById('shipping-zone');
+      const helpSelect = document.getElementById('shipping-zone-help');
+
+      if (cartSelect) {
+        cartSelect.addEventListener('change', calculateShipping);
+      }
+
+      if (helpSelect) {
+        helpSelect.addEventListener('change', calculateShipping);
+      }
+
+      calculateShipping();
+    }
+
+    // ── MOBILE DRAWER ─────────────────────────────────────────────────────────────
+    function toggleDrawer() {
+      const drawer = document.getElementById('mobile-drawer');
+      const btn = document.getElementById('hamburger');
+      const open = drawer.classList.contains('open');
+      drawer.classList.toggle('open', !open);
+      btn.classList.toggle('open', !open);
+    }
+
+    function closeDrawer() {
+      document.getElementById('mobile-drawer').classList.remove('open');
+      document.getElementById('hamburger').classList.remove('open');
+    }
+
+    // Close drawer when clicking outside
+    document.addEventListener('click', function (e) {
+      const drawer = document.getElementById('mobile-drawer');
+      const hamburger = document.getElementById('hamburger');
+      if (drawer.classList.contains('open') &&
+        !drawer.contains(e.target) &&
+        !hamburger.contains(e.target)) {
+        closeDrawer();
+      }
+    });
+
+    // ── PRODUCTS ──────────────────────────────────────────────────────────────────
+    async function loadProducts() {
+      const res = await fetch('/api/products');
+      products = await res.json();
+      const cats = [...new Set(products.map(p => p.category))];
+      const chips = document.getElementById('filter-chips');
+      chips.innerHTML = '<button class="chip active" onclick="setCategory(null, this)">Todos</button>';
+      cats.forEach(c => {
+        chips.innerHTML += '<button class="chip" onclick="setCategory(\'' + c + '\', this)">' + c + '</button>';
+      });
+      renderProducts(products);
+    }
+
+    function renderProducts(list) {
+      console.log("PRIMER PRODUCTO:", list[0]);
+      console.log("IMAGE:", list[0].image);
+      list.forEach(p => {
+        console.log(
+          "ID:", p.id,
+          "NOMBRE:", p.name,
+          "IMAGE:", p.image
+        );
+      });
+      const grid = document.getElementById('products-grid');
+      if (!list.length) {
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:3rem">Sin resultados</div>';
+        return;
+      }
+      grid.innerHTML = list.map(p => `
+    <div class="product-card">
+      ${p.badge ? '<span class="product-badge">' + p.badge + '</span>' : ''}
+      ${p.image ? `<img src="${p.image}" alt="${p.name}" class="product-image">` : `<div class="product-emoji">${p.emoji}</div>`
+        }
+      <div>
+        <div class="product-category">${p.category}</div>
+        <div class="product-name">${p.name}</div>
+      </div>
+      <div class="product-desc">${p.description}</div>
+      <div class="product-footer">
+        <div>
+          <div class="product-price">$${p.price.toFixed(2)}</div>
+          <div class="product-stock">${p.stock} disponibles</div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="addToCart(${p.id})">+ Agregar</button>
+      </div>
+    </div>
+  `).join('');
+    }
+
+    function setCategory(cat, el) {
+      console.log("CLICK CATEGORIA:", cat);
+      activeCategory = cat;
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      filterProducts();
+    }
+
+    function filterProducts() {
+      const q = document.getElementById('search-input').value.toLowerCase();
+      let list = products;
+
+      console.log("Productos cargados:", products.length);
+      console.log("Categoria activa:", activeCategory);
+
+
+      if (activeCategory) list = list.filter(p => p.category === activeCategory);
+      if (q) list = list.filter(p =>
+        p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q)
+      );
+      renderProducts(list);
+    }
+
+    // ── CART ──────────────────────────────────────────────────────────────────────
+    async function loadCart() {
+      const res = await fetch('/api/cart');
+      cart = await res.json();
+      updateCartBadge();
+    }
+
+    function updateCartBadge() {
+      const total = cart.reduce((s, i) => s + i.quantity, 0);
+      const badge = document.getElementById('cart-count');
+      badge.textContent = total;
+      total > 0 ? badge.classList.add('show') : badge.classList.remove('show');
+    }
+
+    async function addToCart(productId) {
+      await fetch('/api/cart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productId, quantity: 1 })
+      });
+      await loadCart();
+      showToast('¡Producto agregado! 🛒', 'success');
+    }
+
+    function renderCart() {
+      const empty = document.getElementById('cart-empty');
+      const content = document.getElementById('cart-content');
+
+      if (!cart.length) {
+        empty.style.display = 'block';
+        content.style.display = 'none';
+        return;
+      }
+
+      empty.style.display = 'none';
+      content.style.display = 'grid';
+
+      document.getElementById('cart-items').innerHTML = cart.map(item => `
+    <div class="cart-item">
+      ${item.image
+          ? `<img src="${item.image}" class="cart-item-image">`
+          : `<div class="cart-item-emoji">${item.emoji}</div>`
+        }
+
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">$${item.price.toFixed(2)} c/u</div>
+      </div>
+
+      <div class="qty-control">
+        <button class="qty-btn" onclick="updateQty(${item.productId}, ${item.quantity - 1})">−</button>
+        <span class="qty-num">${item.quantity}</span>
+        <button class="qty-btn" onclick="updateQty(${item.productId}, ${item.quantity + 1})">+</button>
+      </div>
+
+      <button class="btn btn-outline btn-sm" onclick="removeFromCart(${item.productId})">✕</button>
+    </div>
+  `).join('');
+
+      const subtotal = cart.reduce((s, i) => s + i.price * i.quantity, 0);
+
+      document.getElementById('sum-sub').textContent = '$' + subtotal.toFixed(2);
+      document.getElementById('shipping-total').textContent = '$' + currentShipping.toFixed(2);
+
+      document.getElementById('sum-total').textContent =
+        '$' + (subtotal + currentShipping).toFixed(2);
+      calculateShipping();
+    }
+
+    async function removeFromCart(productId) {
+      await fetch('/api/cart/' + productId, { method: 'DELETE' });
+      await loadCart(); renderCart();
+    }
+
+    async function clearCart() {
+      await fetch('/api/cart', { method: 'DELETE' });
+      await loadCart(); renderCart();
+    }
+
+    async function checkout() {
+      calculateShipping(); // 🔥 fuerza actualización antes de enviar
+
+      const shippingZone = document.getElementById('shipping-zone').value;
+
+      const res = await fetch('/api/create-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ shippingZone })
+      });
+
+      // 👇 usuario no logueado
+      if (res.status === 401) {
+        showToast(
+          'Debes iniciar sesión para finalizar la compra 🔒',
+          'error'
+        );
+
+        setTimeout(() => {
+          showPage('auth');
+        }, 1500);
+
+        return;
+      }
+
+
+      const data = await res.json();
+
+      if (data.init_point) {
+        window.location.href = data.init_point;
+      }
+    }
+    // ── AUTH ──────────────────────────────────────────────────────────────────────
+    async function checkAuth() {
+      const res = await fetch('/api/auth/me');
+      currentUser = await res.json();
+      updateUserUI();
+    }
+
+    function updateUserUI() {
+      const info = document.getElementById('user-info');
+      const drawerBlock = document.getElementById('drawer-user-block');
+      const drawerName = document.getElementById('drawer-user-name');
+
+      if (currentUser) {
+        info.classList.add('visible');
+        document.getElementById('user-name').textContent = currentUser.name;
+        if (drawerBlock) {
+          drawerBlock.style.display = 'flex';
+          drawerName.textContent = currentUser.name;
+        }
+      } else {
+        info.classList.remove('visible');
+        if (drawerBlock) drawerBlock.style.display = 'none';
+      }
+    }
+
+    function renderAuth() {
+      const loggedIn = document.getElementById('logged-in-view');
+      const loggedOut = document.getElementById('logged-out-view');
+      if (currentUser) {
+        loggedIn.style.display = 'block'; loggedOut.style.display = 'none';
+        document.getElementById('logged-user-name').textContent = '¡Hola, ' + currentUser.name + '! 👋';
+      } else {
+        loggedIn.style.display = 'none'; loggedOut.style.display = 'block';
+      }
+    }
+
+    function switchTab(tab) {
+      document.getElementById('form-login').style.display = tab === 'login' ? 'block' : 'none';
+      document.getElementById('form-register').style.display = tab === 'register' ? 'block' : 'none';
+      document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+      document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+      document.getElementById('auth-msg').style.display = 'none';
+    }
+
+    function showAuthMsg(msg, type) {
+      const el = document.getElementById('auth-msg');
+      el.textContent = msg; el.className = 'msg ' + type; el.style.display = 'block';
+    }
+
+    async function login() {
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      const btn = document.getElementById('btn-login');
+      btn.innerHTML = '<span class="spinner"></span>';
+      const res = await fetch('/api/auth/login', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      btn.textContent = 'Iniciar sesión';
+      if (res.ok) { currentUser = data; updateUserUI(); renderAuth(); showToast('¡Bienvenido, ' + data.name + '! 🎉', 'success'); }
+      else { showAuthMsg(data.error, 'error'); }
+      if (document.getElementById('page-chat').classList.contains('active')) {
+        showPage('chat');
+      }
+    }
+
+    async function register() {
+      const name = document.getElementById('reg-name').value;
+      const email = document.getElementById('reg-email').value;
+      const password = document.getElementById('reg-password').value;
+      const btn = document.getElementById('btn-reg');
+      btn.innerHTML = '<span class="spinner"></span>';
+      const res = await fetch('/api/auth/register', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password })
+      });
+      const data = await res.json();
+      btn.textContent = 'Crear cuenta';
+      if (res.ok) { currentUser = data; updateUserUI(); renderAuth(); showToast('¡Cuenta creada! Bienvenido 🎉', 'success'); }
+      else { showAuthMsg(data.error, 'error'); }
+    }
+
+    async function logout() {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      currentUser = null; updateUserUI(); showPage('products');
+      showToast('Sesión cerrada', 'success');
+    }
+
+    // ── TOAST ─────────────────────────────────────────────────────────────────────
+    let toastTimer;
+    function showToast(msg, type = 'success') {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.className = 'show ' + type;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { t.className = ''; }, 3000);
+    }
+
+    init();
+
+    // PAGINAS
+
+    // ── Todos los productos ───────────────────────────────────────────────────────────────
+
+    function showAllProducts() {
+      showPage('products');
+      renderProducts(products);
+    }
+
+    // ── Ofertas ───────────────────────────────────────────────────────────────
+
+    function showOffers() {
+      showPage('products');
+
+      const offers = products.filter(
+        p => p.badge === 'Oferta'
+      );
+
+      renderProducts(offers);
+    }
+
+    // ── Novedades ───────────────────────────────────────────────────────────────
+
+    function showNews() {
+      showPage('products');
+
+      const offers = products.filter(
+        p => p.badge === 'Novedades'
+      );
+
+      renderProducts(offers);
+    }
+
+    // ── Más Vendidos ───────────────────────────────────────────────────────────────
+
+    function showSell() {
+      showPage('products');
+
+      const offers = products.filter(
+        p => p.badge === 'Más Vendidos'
+      );
+
+      renderProducts(offers);
+    }
+
+    // ── showHelp ───────────────────────────────────────────────────────────────
+
+    function showHelpPage(type) {
+      showPage('help');
+
+      const title = document.querySelector('#page-help .page-header h1');
+      const text = document.querySelector('#page-help .page-header p');
+
+      if (type === 'help') {
+        title.textContent = 'Centro de Ayuda';
+        text.textContent = 'Realizá cualquier consulta.';
+      }
+
+      if (type === 'shipping') {
+        title.textContent = 'Envíos y Devoluciones';
+        text.textContent = 'Consultas sobre envíos, entregas y devoluciones.';
+      }
+
+      if (type === 'warranty') {
+        title.textContent = 'Garantía';
+        text.textContent = 'Consultas sobre garantías y soporte.';
+      }
+    }
+
+    async function sendContactForm() {
+
+      const name =
+        document.getElementById('contact-name').value;
+
+      const email =
+        document.getElementById('contact-email').value;
+
+      const subject =
+        document.getElementById('contact-subject').value;
+
+      const message =
+        document.getElementById('contact-message').value;
+
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          subject,
+          message
+        })
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        showToast(
+          'Consulta enviada correctamente ✅',
+          'success'
+        );
+      } else {
+        showToast(
+          'Error al enviar la consulta ❌',
+          'error'
+        );
+      }
+    }
+
+    // calcular el envio segun el codigo postal
+    let currentShipping = 0;
+
+    async function calculateShipping() {
+      const selectId = document.getElementById('page-cart')?.classList.contains('active')
+        ? 'shipping-zone'
+        : 'shipping-zone-help';
+
+      const select = document.getElementById(selectId);
+      if (!select) return;
+
+      if (!select) return;
+
+      const zone = select.value;
+
+      const res = await fetch('/api/shipping/' + zone);
+      const data = await res.json();
+
+      currentShipping = data.cost;
+
+      const subtotal = cart.reduce((s, i) => s + i.price * i.quantity, 0);
+
+      // SI ESTÁS EN HELP
+      const helpResult = document.getElementById('shipping-result');
+      if (helpResult) {
+        helpResult.textContent = `Costo estimado de envío: $${currentShipping}`;
+      }
+
+      // SI ESTÁS EN CARRITO
+      const shippingEl = document.getElementById('shipping-total');
+      const totalEl = document.getElementById('sum-total');
+
+      if (shippingEl && totalEl) {
+        shippingEl.textContent = '$' + currentShipping.toFixed(2);
+        totalEl.textContent = '$' + (subtotal + currentShipping).toFixed(2);
+      }
+    }
+
+    function irAGarantia() {
+      showPage('help'); // 👈 importante
+
+      setTimeout(() => {
+        document.getElementById('garantia').scrollIntoView({
+          behavior: 'smooth'
+        });
+      }, 50);
+    }
+
+    function irAEnvios() {
+      showPage('help');
+
+      setTimeout(() => {
+        const el = document.getElementById('envios-section');
+        if (el) {
+          const y = el.getBoundingClientRect().top + window.pageYOffset - 80;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      }, 100);
+    }
+
+    // CREAR EL SORTEO GUARDANDO NUMERO POR USUARIO
+    async function enterRaffle() {
+
+      const name = document.getElementById('raffle-name').value;
+      const email = document.getElementById('raffle-email').value;
+
+      const res = await fetch('/api/raffle', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          email
+        })
+      });
+
+      const data = await res.json();
+
+      const result = document.getElementById('raffle-result');
+
+      if (res.ok) {
+        result.innerHTML =
+          `🎉 Tu número para el sorteo es: <strong>${data.ticket}</strong>`;
+      } else {
+        result.innerHTML =
+          `⚠️ ${data.error}`;
+      }
+    }
+
+  </script>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+
+    // ── CHAT ──────────────────────────────────────────────────────────────────────
+    let socket = null;
+    let unreadCount = 0;
+    let chatOpen = false;
+
+    function initChat() {
+      if (socket) return; // ya conectado
+
+      socket = io();
+
+      socket.on('connect', () => {
+        console.log('Chat conectado');
+      });
+
+      socket.on('chat:error', (msg) => {
+        console.warn('Chat error:', msg);
+        socket = null;
+      });
+
+      socket.on('chat:history', (msgs) => {
+        const container = document.getElementById('chat-messages');
+        container.innerHTML = '';
+        msgs.forEach(m => appendMessage(m, false));
+        scrollChat();
+      });
+
+      socket.on('chat:message', (msg) => {
+        appendMessage(msg, true);
+        // Si el chat no está abierto, mostrar badge
+        if (!chatOpen) {
+          unreadCount++;
+          updateChatBadge();
+        }
+      });
+
+      socket.on('chat:online', (users) => {
+        document.getElementById('online-count').textContent = users.length;
+        const list = document.getElementById('online-list');
+        list.innerHTML = users.map(u =>
+          '<div class="online-user"><span class="dot"></span>' +
+          escHtml(u.name) + (u.id === currentUser?.id ? ' <span style="color:var(--accent2);font-size:0.7rem">(vos)</span>' : '') +
+          '</div>'
+        ).join('');
+      });
+
+      socket.on('disconnect', () => {
+        console.log('Chat desconectado');
+      });
+    }
+
+    function appendMessage(msg, animate) {
+      const container = document.getElementById('chat-messages');
+      const el = document.createElement('div');
+
+      if (msg.type === 'system') {
+        el.className = 'msg-system';
+        el.textContent = msg.text;
+      } else {
+        const isMe = currentUser && msg.userId === currentUser.id;
+        el.className = 'chat-msg' + (isMe ? ' mine' : '');
+        const initial = (msg.name || '?')[0].toUpperCase();
+        const time = new Date(msg.time).toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
+        el.innerHTML =
+          '<div class="msg-avatar">' + initial + '</div>' +
+          '<div>' +
+          '<div class="msg-bubble">' +
+          '<div class="msg-name">' + escHtml(msg.name) + '</div>' +
+          '<div class="msg-text">' + escHtml(msg.text) + '</div>' +
+          '<div class="msg-time">' + time + '</div>' +
+          '</div>' +
+          '</div>';
+      }
+
+      if (animate) el.style.animation = 'slideUp 0.2s ease';
+      container.appendChild(el);
+      scrollChat();
+    }
+
+    function scrollChat() {
+      const c = document.getElementById('chat-messages');
+      if (c) c.scrollTop = c.scrollHeight;
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text || !socket) return;
+      socket.emit('chat:send', text);
+      input.value = '';
+      input.focus();
+    }
+
+    function updateChatBadge() {
+      const badge = document.getElementById('drawer-chat-badge');
+      const navBtn = document.getElementById('nav-chat');
+      if (unreadCount > 0) {
+        if (badge) { badge.textContent = unreadCount; badge.style.display = 'inline'; }
+        if (navBtn) navBtn.textContent = '💬 Chat (' + unreadCount + ')';
+      } else {
+        if (badge) badge.style.display = 'none';
+        if (navBtn) navBtn.textContent = '💬 Chat';
+      }
+    }
+
+    function escHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // Enviar con Enter
+    document.addEventListener('DOMContentLoaded', () => {
+      const input = document.getElementById('chat-input');
+      if (input) {
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+        });
+      }
+    });
+
+    // ── Override showPage to handle chat logic ─────────────────────────────────────
+    function showPage(name) {
+      chatOpen = (name === 'chat');
+
+      if (chatOpen) {
+        unreadCount = 0;
+        updateChatBadge();
+      }
+
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+      const page = document.getElementById('page-' + name);
+      const nav = document.getElementById('nav-' + name);
+
+      if (page) page.classList.add('active');
+      if (nav) nav.classList.add('active');
+
+      if (name === 'cart') renderCart();
+      if (name === 'auth') renderAuth();
+
+      // CHAT LOGIC
+      if (name === 'chat') {
+        const locked = document.getElementById('chat-locked');
+        const active = document.getElementById('chat-active');
+        const inputRow = document.getElementById('chat-input-row');
+
+        if (!currentUser) {
+          locked.style.display = 'flex';
+          active.style.display = 'none';
+          inputRow.style.display = 'none';
+          return;
+        }
+
+        locked.style.display = 'none';
+        active.style.display = 'flex';
+        inputRow.style.display = 'flex';
+
+        initChat();
+        setTimeout(scrollChat, 100);
+      }
+    }
+
+    // Desconectar chat al cerrar sesión
+    window.logout = async function () {
+      if (socket) { socket.disconnect(); socket = null; }
+      await fetch('/api/auth/logout', { method: 'POST' });
+      currentUser = null;
+      updateUserUI();
+      showPage('products');
+      showToast('Sesión cerrada', 'success');
+    };
+  </script>
+
+</body>
+
+</html>

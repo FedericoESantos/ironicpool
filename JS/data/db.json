@@ -1,0 +1,50 @@
+{
+  "users": [
+    {
+      "id": 1781463217617,
+      "name": "Federico Eduardo Santos SANTOS",
+      "email": "boomartsfs@gmail.com",
+      "password": "$2a$10$zZ/KpBd/P1nGU79X63Ha5.OCVcBA27MnXE9nOfpVUn9RgYPVXWmEu",
+      "createdAt": "2026-06-14T18:53:37.617Z"
+    }
+  ],
+  "orders": [
+    {
+      "id": 1781463232180,
+      "userId": 1781463217617,
+      "items": [
+        {
+          "productId": 3,
+          "quantity": 1,
+          "name": "DareDevil",
+          "price": 1000,
+          "emoji": "🎭",
+          "image": "/images/prod/A/3.jpg"
+        }
+      ],
+      "shippingZone": "Montevideo",
+      "shippingCost": 260,
+      "status": "pending",
+      "createdAt": "2026-06-14T18:53:52.180Z"
+    },
+    {
+      "id": 1781464688862,
+      "userId": 1781463217617,
+      "items": [
+        {
+          "productId": 2,
+          "quantity": 1,
+          "name": "Wolverine",
+          "price": 1200,
+          "emoji": "🎭",
+          "image": "/images/prod/A/2.jpg"
+        }
+      ],
+      "shippingZone": "Interior del País",
+      "shippingCost": 450,
+      "status": "pending",
+      "createdAt": "2026-06-14T19:18:08.862Z"
+    }
+  ],
+  "raffles": []
+}
