@@ -554,6 +554,12 @@ app.post('/api/raffle', (req, res) => {
 
 
 // ── SPA fallback ───────────────────────────────────────────────────────────────
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    ok: true
+  });
+});
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
@@ -565,8 +571,8 @@ console.log("EMAIL_USER =", !!process.env.EMAIL_USER);
 console.log("EMAIL_PASS =", !!process.env.EMAIL_PASS);
 console.log("ADMIN_EMAIL =", !!process.env.ADMIN_EMAIL);
 
-server.listen(PORT, () => {
-  console.log(`\n🚀 Tienda + Chat corriendo en http://localhost:${PORT}\n`);
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Servidor escuchando en puerto ${PORT}`);
 });
 
 // ── consultas al mail ───────────────────────────────────────────────────────────────
