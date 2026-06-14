@@ -1,4 +1,4 @@
-# ⚡ IronicPool — Tienda Online con Node.js, Express y Mercado Pago
+# ⚡ TechStore — Tienda Online con Node.js, Express y Mercado Pago
 
 Aplicación web completa desarrollada con **Node.js**, **Express**, **Socket.IO** y **Mercado Pago**, que permite la venta de productos, gestión de usuarios, carrito de compras, chat en tiempo real y sorteos.
 
@@ -301,6 +301,6 @@ Actualmente utiliza archivos JSON.
 
 ## Autor
 
-Desarrollado por IronicPool / 🇺🇾
+Desarrollado por IronicPool / TechStore 🇺🇾
 
 Todos los derechos reservados.
