@@ -564,12 +564,22 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
-console.log("PORT =", process.env.PORT);
-console.log("SESSION_SECRET =", !!process.env.SESSION_SECRET);
-console.log("MP_ACCESS_TOKEN =", !!process.env.MP_ACCESS_TOKEN);
-console.log("EMAIL_USER =", !!process.env.EMAIL_USER);
-console.log("EMAIL_PASS =", !!process.env.EMAIL_PASS);
-console.log("ADMIN_EMAIL =", !!process.env.ADMIN_EMAIL);
+console.log("__dirname =", __dirname);
+
+console.log(
+  "INDEX:",
+  fs.existsSync(path.join(__dirname, '..', 'public', 'index.html'))
+);
+
+console.log(
+  "PRODUCTS:",
+  fs.existsSync(path.join(__dirname, '..', 'data', 'products', 'products.json'))
+);
+
+console.log(
+  "DB:",
+  fs.existsSync(path.join(__dirname, 'data', 'db.json'))
+);
 
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Servidor escuchando en puerto ${PORT}`);
