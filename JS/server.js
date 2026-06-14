@@ -25,11 +25,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
+app.set('trust proxy', 1);
+
 const sessionMiddleware = session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 }
+  cookie: { secure: true, sameSite:'none', maxAge: 24 * 60 * 60 * 1000 }
 });
 app.use(sessionMiddleware);
 
@@ -59,6 +61,11 @@ function saveDB(data) {
 const PRODUCTS_PATH = path.join(__dirname, '..', 'data', 'products', 'products.json');
 
 function loadProducts() {
+  fs.mkdirSync(
+    path.join(__dirname, '..', 'data', 'products'),
+    { recursive: true }
+  );
+
   if (!fs.existsSync(PRODUCTS_PATH)) {
     fs.writeFileSync(PRODUCTS_PATH, JSON.stringify([], null, 2));
     return [];
@@ -299,15 +306,15 @@ app.post('/api/create-payment', requireAuth, async (req, res) => {
 
       // 🔥 IMPORTANTE: usa ngrok o dominio real
       back_urls: {
-        success: 'd715-2800-a4-654-1900-a099-12ea-4f73-856e.ngrok-free.app/success',
-        failure: 'd715-2800-a4-654-1900-a099-12ea-4f73-856e.ngrok-free.app/failure',
-        pending: 'd715-2800-a4-654-1900-a099-12ea-4f73-856e.ngrok-free.app/pending'
+        success: 'https://d715-2800-a4-654-1900-a099-12ea-4f73-856e.ngrok-free.app/success',
+        failure: 'https://d715-2800-a4-654-1900-a099-12ea-4f73-856e.ngrok-free.app/failure',
+        pending: 'https://d715-2800-a4-654-1900-a099-12ea-4f73-856e.ngrok-free.app/pending'
       },
 
       auto_return: 'approved',
 
       // 🔥 CLAVE QUE TE FALTA
-      notification_url: 'https://TU-DOMINIO-REAL.com/api/webhook'
+      notification_url: 'ironicpool-production.up.railway.app/api/webhook'
     };
 
     const response = await preferenceClient.create({
@@ -324,6 +331,11 @@ app.post('/api/create-payment', requireAuth, async (req, res) => {
       error: 'No se pudo crear el pago'
     });
   }
+});
+
+app.post('/api/webhook', (req, res) => {
+  console.log(req.body);
+  res.sendStatus(200);
 });
 
 app.get('/success', (req, res) => {
