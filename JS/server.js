@@ -12,6 +12,10 @@ const server = http.createServer(app);
 const io = new Server(server);
 const PORT = process.env.PORT || 3000;
 
+// ── consultas al mail ───────────────────────────────────────────────────────────────
+const nodemailer = require('nodemailer');
+
+
 const { MercadoPagoConfig, Preference } = require('mercadopago');
 
 const client = new MercadoPagoConfig({
@@ -586,6 +590,3 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Servidor escuchando en puerto ${PORT}`);
 });
 
-// ── consultas al mail ───────────────────────────────────────────────────────────────
-
-const nodemailer = require('nodemailer');
