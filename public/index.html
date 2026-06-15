@@ -1131,7 +1131,13 @@
     // ── Override showPage to handle chat logic ─────────────────────────────────────
     function showPage(name) {
       const intro = document.getElementById('home-intro');
+      // Ocultar siempre el intro
+      document.getElementById('home-intro').style.display = 'none';
 
+      // Mostrar solo en productos
+      if (name === 'products') {
+        document.getElementById('home-intro').style.display = 'block';
+      }
       if (name === 'products') {
         intro.style.display = 'block';
       } else {
