@@ -465,7 +465,8 @@ app.post('/api/contact', async (req, res) => {
   const { name, email, subject, message } = req.body;
 
   try {
-
+    console.log("EMAIL_USER:", process.env.EMAIL_USER);
+    console.log("EMAIL_PASS:", process.env.EMAIL_PASS ? "OK" : "NO CONFIGURADA");
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
