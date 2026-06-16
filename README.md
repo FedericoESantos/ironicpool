@@ -1,4 +1,4 @@
-# ⚡ TechStore — Tienda Online con Node.js, Express y Mercado Pago
+# ⚡ Ironic Pool — Tienda Online con Node.js, Express y Mercado Pago
 
 Aplicación web completa desarrollada con **Node.js**, **Express**, **Socket.IO** y **Mercado Pago**, que permite la venta de productos, gestión de usuarios, carrito de compras, chat en tiempo real y sorteos.
 
@@ -30,7 +30,7 @@ Aplicación web completa desarrollada con **Node.js**, **Express**, **Socket.IO*
 * bcryptjs
 * dotenv
 * Mercado Pago SDK
-* Nodemailer
+* Resend
 
 ### Frontend
 
@@ -214,7 +214,7 @@ Permite registrar participantes y asignar automáticamente un número de sorteo.
 | ------ | ------------ |
 | POST   | /api/contact |
 
-Envía consultas mediante correo electrónico usando Nodemailer.
+Envía consultas mediante correo electrónico usando Resend.
 
 ---
 

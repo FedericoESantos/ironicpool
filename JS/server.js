@@ -13,9 +13,10 @@ const io = new Server(server);
 const PORT = process.env.PORT || 3000;
 
 // ── consultas al mail ───────────────────────────────────────────────────────────────
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-
+// ── mercadopago ───────────────────────────────────────────────────────────────
 const { MercadoPagoConfig, Preference } = require('mercadopago');
 
 const client = new MercadoPagoConfig({
@@ -469,46 +470,43 @@ app.post('/api/contact', async (req, res) => {
   const { name, email, subject, message } = req.body;
 
   try {
-    console.log("EMAIL_USER:", process.env.EMAIL_USER);
-    console.log("EMAIL_PASS:", process.env.EMAIL_PASS ? "OK" : "NO CONFIGURADA");
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      },
-      family: 4,
-    });
 
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+    const data = await resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: 'soytudadypool@gmail.com',
       replyTo: email,
-      to: process.env.EMAIL_USER,
       subject: `Consulta Web: ${subject}`,
       html: `
         <h2>Nueva consulta desde IroniPool</h2>
+
         <p><strong>Nombre:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Asunto:</strong> ${subject}</p>
+
         <hr>
+
         <p>${message}</p>
       `
     });
 
-    res.json({ success: true });
+    console.log(data);
+
+    res.json({
+      success: true
+    });
 
   } catch (error) {
+
     console.error(error);
 
     res.status(500).json({
       success: false,
-      error: 'No se pudo enviar el correo'
+      error: error.message
     });
+
   }
 });
-
+    
 // CREA EL TICKET PARA LOS SORTEOS
 app.post('/api/raffle', (req, res) => {
   const { name, email } = req.body;
