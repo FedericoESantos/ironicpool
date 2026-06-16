@@ -386,7 +386,8 @@ app.get('/api/admin/users', requireAuth, (req, res) => {
   if (req.session.userEmail !== process.env.ADMIN_EMAIL) {
     return res.status(403).json({
       error: 'Acceso denegado',
-      emailSesion: req.session.userEmail
+      emailSesion: req.session.userEmail,
+      adminEmail: process.env.ADMIN_EMAIL
     });
   }
 
