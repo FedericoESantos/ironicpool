@@ -905,6 +905,10 @@
           'Consulta enviada correctamente ✅',
           'success'
         );
+        document.getElementById('contact-name').value = '';
+        document.getElementById('contact-email').value = '';
+        document.getElementById('contact-subject').value = '';
+        document.getElementById('contact-message').value = '';
       } else {
         showToast(
           'Error al enviar la consulta ❌',
@@ -1193,6 +1197,13 @@
       showPage('products');
       showToast('Sesión cerrada', 'success');
     };
+
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get('paid') === 'true') {
+      clearCart();
+      showToast('¡Pago realizado con éxito! 🎉', 'success');
+    }
   </script>
 
 </body>

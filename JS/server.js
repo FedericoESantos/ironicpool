@@ -350,7 +350,9 @@ app.post('/api/webhook', (req, res) => {
 
 app.get('/success', (req, res) => {
   req.session.cart = [];
-  res.redirect('/gracias.html');
+  req.session.save(() => {
+    res.redirect('/?paid=true');
+  });
 });
 
 app.get('/pending', (req, res) => {
