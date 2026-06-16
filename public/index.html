@@ -808,6 +808,7 @@
 
     function showAllProducts() {
       showPage('products');
+      document.getElementById('home-intro').style.display = 'none';
       renderProducts(products);
     }
 
@@ -815,7 +816,7 @@
 
     function showOffers() {
       showPage('products');
-
+      document.getElementById('home-intro').style.display = 'none';
       const offers = products.filter(
         p => p.badge === 'Oferta'
       );
@@ -827,7 +828,7 @@
 
     function showNews() {
       showPage('products');
-
+      document.getElementById('home-intro').style.display = 'none';
       const offers = products.filter(
         p => p.badge === 'Novedades'
       );
@@ -839,12 +840,12 @@
 
     function showSell() {
       showPage('products');
-
-      const offers = products.filter(
+      document.getElementById('home-intro').style.display = 'none';
+      const sell = products.filter(
         p => p.badge === 'Más Vendidos'
       );
 
-      renderProducts(offers);
+      renderProducts(sell);
     }
 
     // ── showHelp ───────────────────────────────────────────────────────────────
