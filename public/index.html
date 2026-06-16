@@ -20,7 +20,7 @@
   <!-- ── NAV ── -->
   <nav>
     <!-- Logo siempre visible -->
-    <div class="nav-logo" onclick="showPage('products')">
+    <div class="nav-logo" onclick="goHome()">
       <img src="./images/LOGO.png" alt="logo" class="logo">
     </div>
 
@@ -403,7 +403,7 @@
     <div class="footer-grid">
       <div class="footer-brand">
 
-        <div class="nav-logo" onclick="showPage('products')">
+        <div class="nav-logo" onclick="goHome()">
           <img src="./images/LOGO.png" alt="logo" class="logo">
         </div>
 
@@ -1204,6 +1204,16 @@
     if (params.get('paid') === 'true') {
       clearCart();
       showToast('¡Pago realizado con éxito! 🎉', 'success');
+    }
+
+    // Esta funcion regresa al top de la pagina
+    function goHome() {
+      showPage('products');
+
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
     }
   </script>
 
