@@ -316,15 +316,15 @@ app.post('/api/create-payment', requireAuth, async (req, res) => {
 
       // 🔥 IMPORTANTE: usa ngrok o dominio real
       back_urls: {
-        success: 'https://d715-2800-a4-654-1900-a099-12ea-4f73-856e.ngrok-free.app/success',
-        failure: 'https://d715-2800-a4-654-1900-a099-12ea-4f73-856e.ngrok-free.app/failure',
-        pending: 'https://d715-2800-a4-654-1900-a099-12ea-4f73-856e.ngrok-free.app/pending'
+        success: 'https://ironicpool.onrender.com//success',
+        failure: 'https://ironicpool.onrender.com//failure',
+        pending: 'https://ironicpool.onrender.com//pending'
       },
 
       auto_return: 'approved',
 
       // 🔥 CLAVE QUE TE FALTA
-      notification_url: 'https://ironicpool-production.up.railway.app/api/webhook'
+      notification_url: 'https://ironicpool.onrender.com//api/webhook'
     };
 
     const response = await preferenceClient.create({
