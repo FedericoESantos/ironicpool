@@ -379,21 +379,18 @@ app.post('/api/products', (req, res) => {
 });
 
 
-app.get('/api/admin/users', requireAuth, (req, res) => {
-
-  console.log("EMAIL EN SESION:", req.session.userEmail);
-
-  if (req.session.userEmail !== process.env.ADMIN_EMAIL) {
-    return res.status(403).json({
-      error: 'Acceso denegado',
-      emailSesion: req.session.userEmail,
-      adminEmail: process.env.ADMIN_EMAIL
-    });
-  }
+app.get('/api/admin/users', requireAdmin, (req, res) => {
 
   const db = loadDB();
 
-  res.json(db.users);
+  const users = db.users.map(u => ({
+    id: u.id,
+    name: u.name,
+    email: u.email,
+    createdAt: u.createdAt
+  }));
+
+  res.json(users);
 });
 
 app.get('/api/debug/session', (req, res) => {
