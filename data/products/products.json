@@ -394,6 +394,28 @@
         "image": "/images/prod/F/f4.jpg",
         "emoji": "⚙",
         "badge": "Más Vendidos"
+    },
+    { 
+        "id": 37,
+        "name": "Grembling",
+        "price": 650.00,
+        "category": "Mates",
+        "stock": "segun pedido",
+        "description": "Porta latitas de refresco con la cabeza de un greemblin.",
+        "image": "/images/prod/F/e5.jfif",
+        "emoji": "🧉",
+        "badge": "Novedades"
+    },
+    { 
+        "id": 38,
+        "name": "Árbol para vela",
+        "price": 650.00,
+        "category": "Lámparas",
+        "stock": "segun pedido",
+        "description": "Caja para portavelas con frentes en forma de árbol.",
+        "image": "/images/prod/C/C2.jfif",
+        "emoji": "💡",
+        "badge": "Novedades"
     }
     
 ]
