@@ -397,12 +397,12 @@
     },
     { 
         "id": 37,
-        "name": "Grembling",
+        "name": "Gremblin",
         "price": 650.00,
         "category": "Mates",
         "stock": "segun pedido",
         "description": "Porta latitas de refresco con la cabeza de un greemblin.",
-        "image": "/images/prod/F/e5.jfif",
+        "image": "/images/prod/E/e5.jfif",
         "emoji": "🧉",
         "badge": "Novedades"
     },
