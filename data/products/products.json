@@ -437,7 +437,7 @@
         "description": "Lámpara de Stich con portapilas (lleva 2 pilas AA).",
         "image": "/images/prod/C/C7.jfif",
         "emoji": "💡",
-        "badge": "Novedades"
+        "badge": null
     },
     { 
         "id": 41,
@@ -448,18 +448,18 @@
         "description": "Lámpara velador del personaje Stich con interruptor.",
         "image": "/images/prod/C/C8.jfif",
         "emoji": "💡",
-        "badge": "Novedades"
+        "badge": null
     },
     { 
         "id": 42,
         "name": "Woody",
-        "price": 650.00,
+        "price": 1100.00,
         "category": "Muñecos",
         "stock": "segun pedido",
         "description": "Muñeco articulado de Woody de Toy Story de 30 cm de altura aproximados.",
         "image": "/images/prod/D/D8.jfif",
         "emoji": "💡",
-        "badge": "Novedades"
+        "badge": "Oferta"
     },
     { 
         "id": 43,
@@ -470,7 +470,7 @@
         "description": "Caja diseñada especialmente para guardar figuritas del mundial en dos compartimientos.",
         "image": "/images/prod/G/G6.jpg",
         "emoji": "💡",
-        "badge": "Novedades"
+        "badge": "Más Vendidos"
     }
     
 ]
