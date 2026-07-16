@@ -471,6 +471,17 @@
         "image": "/images/prod/G/G6.jpg",
         "emoji": "💡",
         "badge": "Más Vendidos"
+    },
+    { 
+        "id": 44,
+        "name": "Simpsons-Homero",
+        "price": 650.00,
+        "category": "Mates",
+        "stock": "segun pedido",
+        "description": "Mate de la escena de Homero tras esconderse en los arbustos.",
+        "image": "/images/prod/E/e6.jpg",
+        "emoji": "💡",
+        "badge": "Más Vendidos"
     }
     
 ]
