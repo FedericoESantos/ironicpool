@@ -200,7 +200,7 @@
     { 
         "id": 19,
         "name": "Groot",
-        "price": 700.00,
+        "price": 1300.00,
         "category": "Mates",
         "stock": "segun pedido",
         "description": "Mate de Yo Soy Groot.",
@@ -211,7 +211,7 @@
     { 
         "id": 20,
         "name": "Ironman",
-        "price": 700.00,
+        "price": 1000.00,
         "category": "Mates",
         "stock": "segun pedido",
         "description": "Mate de Ironman.",
@@ -222,7 +222,7 @@
     { 
         "id": 21,
         "name": "Jack",
-        "price": 650.00,
+        "price": 1000.00,
         "category": "Mates",
         "stock": "segun pedido",
         "description": "Mate de la película del extraño mundo de Jack.",
@@ -343,7 +343,7 @@
     { 
         "id": 32,
         "name": "Capitan América",
-        "price": 700.00,
+        "price": 1000.00,
         "category": "Mates",
         "stock": "segun pedido",
         "description": "Mate del Capitán América, lider de los Vengadores.",
@@ -398,7 +398,7 @@
     { 
         "id": 37,
         "name": "Gremblin",
-        "price": 650.00,
+        "price": 1300.00,
         "category": "Mates",
         "stock": "segun pedido",
         "description": "Porta latitas de refresco con la cabeza de un greemblin.",
@@ -450,7 +450,7 @@
         "emoji": "💡",
         "badge": null
     },
-    { 
+    {
         "id": 42,
         "name": "Woody",
         "price": 1100.00,
@@ -458,7 +458,7 @@
         "stock": "segun pedido",
         "description": "Muñeco articulado de Woody de Toy Story de 30 cm de altura aproximados.",
         "image": "/images/prod/D/D8.jfif",
-        "emoji": "💡",
+        "emoji": "🐱‍🏍",
         "badge": "Oferta"
     },
     { 
@@ -469,18 +469,18 @@
         "stock": "segun pedido",
         "description": "Caja diseñada especialmente para guardar figuritas del mundial en dos compartimientos.",
         "image": "/images/prod/G/G6.jpg",
-        "emoji": "💡",
+        "emoji": "🎲",
         "badge": "Más Vendidos"
     },
     { 
         "id": 44,
         "name": "Simpsons-Homero",
-        "price": 650.00,
+        "price": 1000.00,
         "category": "Mates",
         "stock": "segun pedido",
         "description": "Mate de la escena de Homero tras esconderse en los arbustos.",
         "image": "/images/prod/E/e6.jpg",
-        "emoji": "💡",
+        "emoji": "🧉",
         "badge": "Más Vendidos"
     }
     
